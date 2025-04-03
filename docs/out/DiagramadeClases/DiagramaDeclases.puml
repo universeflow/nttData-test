@@ -1,0 +1,118 @@
+@startuml
+
+title "Diagrama de Clases"
+
+package controllers.dtos {
+    class UsuarioRequestDto {
+        - String correo
+        - String password
+        - String nombre
+        - Boolean activo
+        - List<TelefonoDto> telefonos
+    }
+
+    class UsuarioResponseDto {
+        - UUID id
+        - String nombre
+        - String correo
+        - LocalDateTime creado
+        - LocalDateTime modificado
+        - LocalDateTime ultimoLogin
+        - String token
+        - Boolean activo
+        - List<TelefonoDto> telefonos
+    }
+
+    class TelefonoDto {
+        - String numero
+        - String codigoPais
+        - String codigoCiudad
+    }
+}
+
+package controllers {
+    class AutenticacionController {
+        - AutenticacionService autenticacionService
+        + ResponseEntity<UsuarioResponseDto> registro(UsuarioRequestDto usuarioRequestDto)
+        + ResponseEntity<UsuarioResponseDto> autenticar(UsuarioRequestDto loginUserDto)
+    }
+}
+package repositories {
+    interface UsuarioRepository {
+        + Optional<Usuario> findByCorreo(String correo)
+        + Usuario save(Usuario usuario)
+        + Optional<Usuario> findById(UUID id)
+    }
+}
+package services {
+    interface AutenticacionService {
+        + UsuarioResponseDto signup(UsuarioRequestDto usuarioRequestDto)
+        + UsuarioResponseDto autenticar(UsuarioRequestDto loginUserDto)
+    }
+
+    class AutenticacionServiceImpl {
+        - UsuarioRepository usuarioRepository
+        - UsuarioMapper usuarioMapper
+        + UsuarioResponseDto signup(UsuarioRequestDto usuarioRequestDto)
+        + UsuarioResponseDto autenticar(UsuarioRequestDto loginUserDto)
+    }
+}
+
+package entities {
+    class Usuario {
+        - UUID id
+        - String nombre
+        - String correo
+        - String password
+        - Boolean activo
+        - List<Telefono> telefonos
+    }
+
+    class Telefono {
+        - String numero
+        - String codigoPais
+        - String codigoCiudad
+    }
+}
+
+package exceptions {
+    class UsuarioNotFoundException extends RuntimeException {
+        + UsuarioNotFoundException(String message)
+    }
+
+    class InvalidPasswordException extends RuntimeException {
+        + InvalidPasswordException(String message)
+    }
+}
+
+package validation {
+    class ValidPassword {
+        + boolean isValid(String password, ConstraintValidatorContext context)
+    }
+}
+
+package mapper {
+    class UsuarioMapper {
+        + UsuarioResponseDto toResponseDto(Usuario usuario)
+        + Usuario toEntity(UsuarioRequestDto usuarioRequestDto)
+    }
+}
+
+package configs {
+    class SecurityConfig {
+        + void configure(HttpSecurity http) throws Exception
+    }
+}
+
+AutenticacionController --> AutenticacionService
+AutenticacionServiceImpl --> UsuarioRepository
+AutenticacionServiceImpl --> UsuarioMapper
+UsuarioRequestDto --> TelefonoDto
+UsuarioResponseDto --> TelefonoDto
+Usuario --> Telefono
+UsuarioMapper --> Usuario
+UsuarioMapper --> UsuarioRequestDto
+UsuarioMapper --> UsuarioResponseDto
+
+
+@enduml

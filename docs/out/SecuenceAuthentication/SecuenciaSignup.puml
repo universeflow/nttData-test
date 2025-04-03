@@ -1,0 +1,44 @@
+@startuml
+title Api-Test - Ntt-Data
+
+skinparam roundcorner 20
+skinparam BoxPadding 5
+skinparam SequenceBoxBackgroundColor AliceBlue
+box "\n/SignUp\n\n"
+                actor User
+                participant "Controller" as Controller
+                participant "Service" as Service
+                participant "UsuarioResponseDto" as ResponseDto
+                participant "Mapper" as Mapper
+                participant "Repository" as Repository
+                participant "UsuarioEntity" as Entity
+                participant "JwtService" as jwt
+
+                User -> Controller++: POST /auth/signup
+                Controller -> Service++: signup(UsuarioRequestDto)
+                alt Busqueda de usuario
+                    Service -> Repository++: findByCorreo(correo)
+                    Repository -> Service --:  / devuelve usuario
+                else Excepcion
+                    Service -> Controller ++: 404 usuario no encontrado
+                    Controller -> User --: 404 usuario no encontrado
+                end
+                Service -> Entity++ : / busca crear instancia entity
+                Entity -> Mapper++ :  de vuelve Instancia entity
+                deactivate Entity
+                Service <- Mapper: mapToEntity(UsuarioRequestDto)
+                deactivate Mapper
+                Service -> Service : Valida si los telefonos no son vacios
+                Service -> jwt ++ : genera Token de seguridad
+                jwt -> Service -- : devuelve token
+                Service -> "Repository" ++ : guarda usuario
+                "Repository" -> Service  --: /devuelve usuario guardado
+
+                Service -> "UsuarioResponseDto" ++ : genera usuario UsuarioResponseDto
+                UsuarioResponseDto -> "Service" -- : Crea UsuarioResponseDto
+                Service -> Controller ++ : devuelve usuario creado
+                Controller -> User -- : devuelve usuario creado
+
+ end box
+
+@enduml
