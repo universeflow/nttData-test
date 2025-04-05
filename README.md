@@ -73,17 +73,36 @@ Este proyecto consiste en una API RESTful desarrollada con Spring Boot que imple
 - Campos requeridos :
   ```json
   {
-    "nombre": "Luis Martinez",
-    "correo": "l.martinezm22@gmail.com",
-    "password": "@Luis2025",
-    "telefonos": [
-      {
-        "numero": "1234567",
-        "codigoCiudad": "1",
-        "codigoPais": "57"
-      }
-    ]
-  }
+  "correo": "test@ntt-data.com",
+  "password": "@Luis2025",
+  "nombre": "Luis Martinez",
+  "telefonos": [{
+        "numero": 111111111,
+        "codigoCiudad": "51",
+        "codigoPais": "1"
+    },
+    {
+        "numero": 222222222,
+        "codigoCiudad": "52",
+        "codigoPais": "2"
+    },
+    {
+        "numero": 444444444,
+        "codigoCiudad": "53",
+        "codigoPais": "3"
+    },
+    {
+        "numero": 555555555,
+        "codigoCiudad": "54",
+        "codigoPais": "4"
+    },
+    {
+        "numero": 666666666,
+        "codigoCiudad": "55",
+        "codigoPais": "5"
+    }
+   ]
+}
   ```
 - Respuesta exitosa: Un objeto `UsuarioResponseDto`.
 
@@ -93,8 +112,8 @@ Este proyecto consiste en una API RESTful desarrollada con Spring Boot que imple
 - Campos requeridos:
   ```json
   {
-    "correo": "l.martinezm22@gmail.com",
-    "password": "@Luis2025"
+   "correo":"test@ntt-data.com",
+   "password":"@Luis2025"
   }
   ```
 - Respuesta exitosa: Un objeto `UsuarioResponseDto` que incluye el token JWT.
@@ -115,17 +134,26 @@ Este proyecto consiste en una API RESTful desarrollada con Spring Boot que imple
 - Campos requeridos:
   ```json
   {
-    "nombre": "Luis Martinez",
-    "correo": "l.martinezm22@gmail.com",
-    "password": "@CambioClave123",
-    "telefonos": [
-      {
-        "numero": "98765432",
-        "codigoCiudad": "12",
-        "codigoPais": "58"
-      }
-    ]
-  }
+    "nombre": "Nombre Cambiado",
+    "correo": "test@ntt-data.com",
+   "telefonos": [
+    {
+        "numero": "12388888",
+        "codigoCiudad": "57",
+        "codigoPais": "1"
+    },
+    {
+        "numero": "987654321",
+        "codigoCiudad": "53",
+        "codigoPais": "7"   
+    },
+    {
+        "numero": "1234567",
+        "codigoCiudad": "57",
+        "codigoPais": "1"
+    }
+   ]
+ }
   ```
 - Respuesta exitosa: Un objeto `UsuarioResponseDto`.
 
