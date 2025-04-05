@@ -1,0 +1,686 @@
+{
+	"info": {
+		"_postman_id": "881d82cd-0c94-47eb-8b82-277fd5281ef5",
+		"name": "NTT DATA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33994822",
+		"_collection_link": "https://test-lib-2024.postman.co/workspace/Team-Workspace~be7fab15-249d-4386-8758-4df356c9cb4c/collection/33994822-881d82cd-0c94-47eb-8b82-277fd5281ef5?action=share&source=collection_link&creator=33994822"
+	},
+	"item": [
+		{
+			"name": "register",
+			"item": [
+				{
+					"name": "Nuevo Usuario",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Extraer el token del response",
+									"const response = pm.response.json();",
+									"const token = response.token;",
+									"",
+									"// Guardar el token como una variable de entorno",
+									"pm.environment.set(\"token\", token);",
+									"",
+									"// Verificar que el token se ha guardado correctamente",
+									"pm.test(\"Token guardado en variable de entorno\", function () {",
+									"    pm.expect(pm.environment.get(\"token\")).to.eql(token);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"correo\": \"test@ntt-data.com\",\n  \"password\": \"@Luis2025\",\n  \"nombre\": \"Luis Martinez\",\n  \"telefonos\": [{\n        \"numero\": 111111111,\n        \"codigoCiudad\": \"51\",\n        \"codigoPais\": \"1\"\n    },\n    {\n        \"numero\": 222222222,\n        \"codigoCiudad\": \"52\",\n        \"codigoPais\": \"2\"\n    },\n    {\n        \"numero\": 444444444,\n        \"codigoCiudad\": \"53\",\n        \"codigoPais\": \"3\"\n    },\n    {\n        \"numero\": 555555555,\n        \"codigoCiudad\": \"54\",\n        \"codigoPais\": \"4\"\n    },\n    {\n        \"numero\": 666666666,\n        \"codigoCiudad\": \"55\",\n        \"codigoPais\": \"5\"\n    }\n   ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nuevo Usuario Correo Incorrecto",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"correo\":\"user123\",\r\n   \"password\":\"minuevaclave\",\r\n   \"nombre\":\"Juan Gomez\",\r\n   \"telefonos\": [{\r\n        \"numero\": 92345678,\r\n        \"codigoCiudad\": \"12\",\r\n        \"codigoPais\": \"2\"\r\n    },\r\n    {\r\n        \"numero\": 98765321,\r\n        \"codigoCiudad\": \"13\",\r\n        \"codigoPais\": \"4\"\r\n    }\r\n   ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Ensure the response is in JSON format",
+							"let response = pm.response.json();",
+							"",
+							"// Extract the token from the response",
+							"let token = response.token;",
+							"",
+							"// Save the token as an environment variable",
+							"pm.environment.set(\"token\", token);"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "allUser",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTJAZW1haWwuY29tIiwiaWF0IjoxNzQzNjg0OTExLCJleHAiOjE3NDM3NzEzMTF9.FCbi7EwUihfK9pvNFHJKyE79PIsPTH7zHFPX3iQzFH8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getByID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Ensure the response is in JSON format",
+									"let response = pm.response.json();",
+									"",
+									"// Extract the token from the response",
+									"let token = response.token;",
+									"",
+									"// Save the token as an environment variable",
+									"pm.environment.set(\"token\", token);",
+									"",
+									"// Verify that the token has been saved correctly",
+									"pm.test(\"Token saved as environment variable\", function () {",
+									"    pm.expect(pm.environment.get(\"token\")).to.eql(token);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTJAZW1haWwuY29tIiwiaWF0IjoxNzQzNjg2NjkxLCJleHAiOjE3NDM3NzMwOTF9.ql4zaiFRdZGmzehK0QP8MDM3qEwX6x-FtcbLMj_6WlE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/e4f22d07-fc36-4131-8802-e6382cc3ac2b",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"e4f22d07-fc36-4131-8802-e6382cc3ac2b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update/{id}",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Ensure the response is in JSON format",
+									"let response = pm.response.json();",
+									"",
+									"// Extract the token from the response",
+									"let token = response.token;",
+									"",
+									"// Save the token as an environment variable",
+									"pm.environment.set(\"token\", token);",
+									"",
+									"// Verify that the token has been saved correctly",
+									"pm.test(\"Token saved as environment variable\", function () {",
+									"    pm.expect(pm.environment.get(\"token\")).to.eql(token);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTJAZW1haWwuY29tIiwiaWF0IjoxNzQzNjg1NjY5LCJleHAiOjE3NDM3NzIwNjl9.TqXI5qDcQkHzJMXmM0is67OybeIj9wiAZNxiHLDGaPg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Juliassss Robert\",\n    \"correo\": \"user1@email.com\",\n    \"creado\": \"2025-04-03T11:11:20.356874\",\n    \"ultimoLogin\": \"2025-04-03T11:11:28.017686\",\n   \"telefonos\": [\n    {\n            \"numero\": \"1234567999\",\n            \"codigoCiudad\": \"57\",\n            \"codigoPais\": \"1\"\n        }\n   ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/967b98b0-c434-4b89-a1dc-642fa1247b0f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"967b98b0-c434-4b89-a1dc-642fa1247b0f"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePassowrd/",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTRAZW1haWwuY29tIiwiaWF0IjoxNzQzNzM0ODg0LCJleHAiOjE3NDM4MjEyODR9.PTyLa25dvPYhIhymXcTsCgwugof5jMkwqyRnBDbWTBM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTJAZW1haWwuY29tIiwiaWF0IjoxNzQzNjg1NjY5LCJleHAiOjE3NDM3NzIwNjl9.TqXI5qDcQkHzJMXmM0is67OybeIj9wiAZNxiHLDGaPg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"correo\": \"user14@email.com\",\n    \"password\": \"C@smbioclave12\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete/{id}",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Ensure the response is in JSON format",
+									"let response = pm.response.json();",
+									"",
+									"// Extract the token from the response",
+									"let token = response.token;",
+									"",
+									"// Save the token as an environment variable",
+									"pm.environment.set(\"token\", token);",
+									"",
+									"// Verify that the token has been saved correctly",
+									"pm.test(\"Token saved as environment variable\", function () {",
+									"    pm.expect(pm.environment.get(\"token\")).to.eql(token);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTJAZW1haWwuY29tIiwiaWF0IjoxNzQzNjg1NjY5LCJleHAiOjE3NDM3NzIwNjl9.TqXI5qDcQkHzJMXmM0is67OybeIj9wiAZNxiHLDGaPg",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nombre\": \"Juliassss Robert\",\n    \"correo\": \"user1@email.com\",\n    \"creado\": \"2025-04-03T11:11:20.356874\",\n    \"ultimoLogin\": \"2025-04-03T11:11:28.017686\",\n   \"telefonos\": [\n    {\n            \"numero\": \"1234567999\",\n            \"codigoCiudad\": \"57\",\n            \"codigoPais\": \"1\"\n        }\n   ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/967b98b0-c434-4b89-a1dc-642fa1247b0f",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"967b98b0-c434-4b89-a1dc-642fa1247b0f"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "login",
+			"item": [
+				{
+					"name": "Ingreso Usuario No Registrado",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"correo\":\"test8@test.com\",\r\n   \"password\":\"@Miclave123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "user1@email.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "Geps123456789*",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Ingreso Usuario Registrado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Ensure the response is in JSON format",
+									"let response = pm.response.json();",
+									"",
+									"// Extract the token from the response",
+									"let token = response.token;",
+									"",
+									"// Save the token as an environment variable",
+									"pm.environment.set(\"token\", token);",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMTJAZW1haWwuY29tIiwiaWF0IjoxNzQzNjUyMzIzLCJleHAiOjE3NDM3Mzg3MjN9.6MGFNigNubgOEGUUgRlahjubAiLjU5NpfuZjLILC4mA",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"correo\":\"user1@email.com\",\r\n   \"password\":\"C@mbioClave123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "user1@email.com",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "1234",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Ensure the response is in JSON format",
+							"let response = pm.response.json();",
+							"",
+							"// Extract the token from the response",
+							"let token = response.token;",
+							"",
+							"// Save the token as an environment variable",
+							"pm.environment.set(\"token\", token);"
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
