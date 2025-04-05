@@ -2,7 +2,7 @@
 
 title "Diagrama de Clases"
 
-package controllers.dtos {
+package controller.dtos {
     class UsuarioRequestDto {
         - String correo
         - String password
@@ -30,24 +30,35 @@ package controllers.dtos {
     }
 }
 
-package controllers {
+package controller {
     class AutenticacionController {
         - AutenticacionService autenticacionService
-        + ResponseEntity<UsuarioResponseDto> registro(UsuarioRequestDto usuarioRequestDto)
-        + ResponseEntity<UsuarioResponseDto> autenticar(UsuarioRequestDto loginUserDto)
+        + ResponseEntity<UsuarioResponseDto> signup(UsuarioRequestDto usuarioRequestDto)
+        + ResponseEntity<UsuarioResponseDto> login(UsuarioRequestDto loginUserDto)
+    }
+
+    class UsuarioController {
+        - UsuarioService usuarioService
+        + ResponseEntity<List<UsuarioResponseDto>> getAll()
+        + ResponseEntity<UsuarioResponseDto> getUsuarioById(UUID uuid)
+        + ResponseEntity<UsuarioResponseDto> updateUsuario(UUID uuid, UsuarioRequestDto userDetails)
+        + ResponseEntity<UsuarioResponseDto> patchUsuario(UUID uuid, UsuarioRequestDto request)
+        + ResponseEntity<Void> deleteUsuario(UUID id)
     }
 }
-package repositories {
+
+package repository {
     interface UsuarioRepository {
-        + Optional<Usuario> findByCorreo(String correo)
-        + Usuario save(Usuario usuario)
-        + Optional<Usuario> findById(UUID id)
+        + Optional<UsuarioEntity> findByCorreo(String correo)
+        + Usuario save(UsuarioEntity usuario)
+        + Optional<UsuarioEntity> findById(UUID id)
     }
 }
-package services {
+
+package service {
     interface AutenticacionService {
         + UsuarioResponseDto signup(UsuarioRequestDto usuarioRequestDto)
-        + UsuarioResponseDto autenticar(UsuarioRequestDto loginUserDto)
+        + UsuarioResponseDto login(UsuarioRequestDto loginUserDto)
     }
 
     class AutenticacionServiceImpl {
@@ -56,63 +67,50 @@ package services {
         + UsuarioResponseDto signup(UsuarioRequestDto usuarioRequestDto)
         + UsuarioResponseDto autenticar(UsuarioRequestDto loginUserDto)
     }
+
+    interface UsuarioService {
+        + List<UsuarioResponseDto> getAll()
+        + Optional<UsuarioResponseDto> getUsuarioById(UUID uuid)
+        + UsuarioResponseDto updateUsuario(UUID uuid, UsuarioRequestDto userDetails)
+        + UsuarioResponseDto patchUsuario(UUID uuid, UsuarioRequestDto request)
+        + void deleteUsuario(UUID id)
+    }
 }
 
-package entities {
-    class Usuario {
+package entity {
+    class UsuarioEntity {
         - UUID id
         - String nombre
         - String correo
         - String password
         - Boolean activo
-        - List<Telefono> telefonos
+        - List<TelefonoEntity> telefonos
     }
 
-    class Telefono {
+    class TelefonoEntity {
         - String numero
         - String codigoPais
         - String codigoCiudad
     }
 }
 
-package exceptions {
-    class UsuarioNotFoundException extends RuntimeException {
-        + UsuarioNotFoundException(String message)
-    }
 
-    class InvalidPasswordException extends RuntimeException {
-        + InvalidPasswordException(String message)
-    }
-}
-
-package validation {
-    class ValidPassword {
-        + boolean isValid(String password, ConstraintValidatorContext context)
-    }
-}
-
-package mapper {
+package controller.mapper {
     class UsuarioMapper {
-        + UsuarioResponseDto toResponseDto(Usuario usuario)
-        + Usuario toEntity(UsuarioRequestDto usuarioRequestDto)
-    }
-}
-
-package configs {
-    class SecurityConfig {
-        + void configure(HttpSecurity http) throws Exception
+        + UsuarioResponseDto toResponseDto(UsuarioEntity usuario)
+        + UsuarioEntity toEntity(UsuarioRequestDto usuarioRequestDto)
     }
 }
 
 AutenticacionController --> AutenticacionService
+UsuarioController --> UsuarioService
 AutenticacionServiceImpl --> UsuarioRepository
 AutenticacionServiceImpl --> UsuarioMapper
 UsuarioRequestDto --> TelefonoDto
 UsuarioResponseDto --> TelefonoDto
-Usuario --> Telefono
-UsuarioMapper --> Usuario
+UsuarioEntity --> TelefonoEntity
+UsuarioMapper --> UsuarioEntity
 UsuarioMapper --> UsuarioRequestDto
 UsuarioMapper --> UsuarioResponseDto
-
 
 @enduml

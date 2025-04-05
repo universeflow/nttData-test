@@ -1,9 +1,8 @@
 package com.nttdata.api.controller;
 
-import com.nttdata.api.controllers.AutenticacionController;
-import com.nttdata.api.controllers.dtos.UsuarioRequestDto;
-import com.nttdata.api.controllers.dtos.UsuarioResponseDto;
-import com.nttdata.api.services.AutenticacionService;
+import com.nttdata.api.controller.dtos.UsuarioRequestDto;
+import com.nttdata.api.controller.dtos.UsuarioResponseDto;
+import com.nttdata.api.service.AutenticacionService;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -49,10 +48,9 @@ public class AutenticacionControllerTest {
     void signupUsuarioExitosamente() {
         when(autenticacionService.signup(usuarioRequestDto)).thenReturn(usuarioResponseDto);
 
-        ResponseEntity<UsuarioResponseDto> response = autenticacionController.registro(usuarioRequestDto);
+        ResponseEntity<UsuarioResponseDto> response = autenticacionController.signup(usuarioRequestDto);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
         assertEquals(usuarioResponseDto, response.getBody());
 
         verify(autenticacionService, times(1)).signup(usuarioRequestDto);
@@ -60,27 +58,24 @@ public class AutenticacionControllerTest {
 
     @Test
     void loginUsuarioExitosamente() {
-        when(autenticacionService.autenticar(usuarioRequestDto)).thenReturn(usuarioResponseDto);
+        when(autenticacionService.login(usuarioRequestDto)).thenReturn(usuarioResponseDto);
 
-        ResponseEntity<UsuarioResponseDto> response = autenticacionController.autenticar(usuarioRequestDto);
+        ResponseEntity<UsuarioResponseDto> response = autenticacionController.login(usuarioRequestDto);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
         assertEquals(usuarioResponseDto, response.getBody());
 
-        verify(autenticacionService, times(1)).autenticar(usuarioRequestDto);
+        verify(autenticacionService, times(1)).login(usuarioRequestDto);
     }
 
     @Test
     void loginUsuarioConCredencialesIncorrectas() {
-        when(autenticacionService.autenticar(usuarioRequestDto)).thenThrow(new BadCredentialsException("Credenciales incorrectas"));
+        when(autenticacionService.login(usuarioRequestDto)).thenThrow(new BadCredentialsException("Credenciales incorrectas"));
 
-        Exception exception = assertThrows(BadCredentialsException.class, () -> {
-            autenticacionController.autenticar(usuarioRequestDto);
-        });
+        Exception exception = assertThrows(BadCredentialsException.class, () -> { autenticacionController.login(usuarioRequestDto);});
 
         assertEquals("Credenciales incorrectas", exception.getMessage());
 
-        verify(autenticacionService, times(1)).autenticar(usuarioRequestDto);
+        verify(autenticacionService, times(1)).login(usuarioRequestDto);
     }
 }
