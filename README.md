@@ -51,6 +51,9 @@ Este proyecto consiste en una API RESTful desarrollada con Spring Boot que imple
 `mvn spring-boot:run`
 
 5. La aplicación estará disponible en `http://localhost:8080` por defecto.
+6. Carga el archivo NTT-DATA.postman_collection.json en Postman para probar los endpoints.
+7. Cargar el archivo enviroment NTT-DATA.postman_environment.json en Postman para configurar el entorno de pruebas.
+
 
 ## Uso de la aplicación
 
