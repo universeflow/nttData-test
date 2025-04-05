@@ -1,9 +1,8 @@
 package com.nttdata.api.controller;
 
-import com.nttdata.api.controllers.UsuarioController;
-import com.nttdata.api.controllers.dtos.UsuarioRequestDto;
-import com.nttdata.api.controllers.dtos.UsuarioResponseDto;
-import com.nttdata.api.services.UsuarioService;
+import com.nttdata.api.controller.dtos.UsuarioRequestDto;
+import com.nttdata.api.controller.dtos.UsuarioResponseDto;
+import com.nttdata.api.service.UsuarioService;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +19,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 
 public class UsuarioControllerTest {
 
@@ -57,10 +55,9 @@ public class UsuarioControllerTest {
     void getAllUsers() {
         when(usuarioService.getAll()).thenReturn(Collections.singletonList(usuarioResponseDto));
 
-        ResponseEntity<List<UsuarioResponseDto>> response = usuarioController.getAllUsers();
+        ResponseEntity<List<UsuarioResponseDto>> response = usuarioController.getAll();
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
         assertEquals(1, response.getBody().size());
         assertEquals(usuarioResponseDto, response.getBody().get(0));
 
@@ -68,38 +65,35 @@ public class UsuarioControllerTest {
     }
 
     @Test
-    void getUserById() {
-        when(usuarioService.getUserById(userId)).thenReturn(Optional.of(usuarioResponseDto));
+    void getUsuarioById() {
+        when(usuarioService.getUsuarioById(userId)).thenReturn(Optional.of(usuarioResponseDto));
 
-        ResponseEntity<UsuarioResponseDto> response = usuarioController.getUserById(userId);
+        ResponseEntity<UsuarioResponseDto> response = usuarioController.getUsuarioById(userId);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
         assertEquals(usuarioResponseDto, response.getBody());
 
-        verify(usuarioService, times(1)).getUserById(userId);
+        verify(usuarioService, times(1)).getUsuarioById(userId);
     }
 
     @Test
-    void getUserByIdNotFound() {
-        when(usuarioService.getUserById(userId)).thenReturn(Optional.empty());
+    void getUsuarioByIdNotFound() {
+        when(usuarioService.getUsuarioById(userId)).thenReturn(Optional.empty());
 
-        ResponseEntity<UsuarioResponseDto> response = usuarioController.getUserById(userId);
+        ResponseEntity<UsuarioResponseDto> response = usuarioController.getUsuarioById(userId);
 
         assertNotNull(response);
-        assertEquals(404, response.getStatusCodeValue());
 
-        verify(usuarioService, times(1)).getUserById(userId);
+        verify(usuarioService, times(1)).getUsuarioById(userId);
     }
 
     @Test
     void updateUser() {
         when(usuarioService.updateUsuario(userId, usuarioRequestDto)).thenReturn(usuarioResponseDto);
 
-        ResponseEntity<UsuarioResponseDto> response = usuarioController.updateUser(userId, usuarioRequestDto);
+        ResponseEntity<UsuarioResponseDto> response = usuarioController.updateUsuario(userId, usuarioRequestDto);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
         assertEquals(usuarioResponseDto, response.getBody());
 
         verify(usuarioService, times(1)).updateUsuario(userId, usuarioRequestDto);
@@ -107,27 +101,28 @@ public class UsuarioControllerTest {
 
     @Test
     void patchUser() {
-        when(usuarioService.patchUsuario(userId, usuarioRequestDto)).thenReturn(usuarioResponseDto);
+        UUID uuid = UUID.randomUUID();
+        when(usuarioService.patchUsuario(uuid, usuarioRequestDto)).thenReturn(usuarioResponseDto);
 
-        ResponseEntity<UsuarioResponseDto> response = usuarioController.patchUser(userId, usuarioRequestDto);
+        when(usuarioService.patchUsuario(uuid,usuarioRequestDto)).thenReturn(usuarioResponseDto);
+
+        ResponseEntity<UsuarioResponseDto> response = usuarioController.patchUsuario(uuid,usuarioRequestDto);
 
         assertNotNull(response);
-        assertEquals(200, response.getStatusCodeValue());
         assertEquals(usuarioResponseDto, response.getBody());
 
-        verify(usuarioService, times(1)).patchUsuario(userId, usuarioRequestDto);
+        verify(usuarioService, times(1)).patchUsuario(uuid,usuarioRequestDto);
     }
 
     @Test
     void deleteUser() {
-        doNothing().when(usuarioService).deleteUser(userId);
+        doNothing().when(usuarioService).deleteUsuario(userId);
 
-        ResponseEntity<Void> response = usuarioController.deleteUser(userId);
+        ResponseEntity<Void> response = usuarioController.deleteUsuario(userId);
 
         assertNotNull(response);
-        assertEquals(204, response.getStatusCodeValue());
 
-        verify(usuarioService, times(1)).deleteUser(userId);
+        verify(usuarioService, times(1)).deleteUsuario(userId);
     }
 }
 

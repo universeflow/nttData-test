@@ -1,7 +1,5 @@
 package com.nttdata.api.controller.dtos;
 
-import com.nttdata.api.controllers.dtos.TelefonoDto;
-import com.nttdata.api.controllers.dtos.UsuarioResponseDto;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
