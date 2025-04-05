@@ -102,7 +102,8 @@ Este proyecto consiste en una API RESTful desarrollada con Spring Boot que imple
         "codigoPais": "5"
     }
    ]
-}
+  }
+
   ```
 - Respuesta exitosa: Un objeto `UsuarioResponseDto`.
 
