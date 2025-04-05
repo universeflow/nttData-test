@@ -154,7 +154,7 @@ Este proyecto consiste en una API RESTful desarrollada con Spring Boot que imple
         "codigoPais": "1"
     }
    ]
- }
+  }
   ```
 - Respuesta exitosa: Un objeto `UsuarioResponseDto`.
 
@@ -162,7 +162,7 @@ Este proyecto consiste en una API RESTful desarrollada con Spring Boot que imple
 
 - Actualiza parcialmente los datos de un usuario por ID.
 - Campos requeridos:
-  ```json
+  ``` json
   {
     "correo": "l.martinezm22@gmail.com",
     "password": "C@mbioclave444"
